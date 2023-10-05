@@ -1,11 +1,9 @@
-import org.apache.commons.configuration2.*;
-import org.apache.commons.configuration2.builder.*;
-import org.apache.commons.configuration2.builder.fluent.*;
-import org.apache.commons.configuration2.ex.ConfigurationException;
-
-import java.util.ArrayList;
-import java.util.List;
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.PropertyAccessor;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.*;
+import java.util.*;
 
 public class Worttrainer {
     private ArrayList<Paar> paare;
@@ -29,54 +27,45 @@ public class Worttrainer {
         }
     }
 
+    public int getVersuche(){
+        return this.versuche;
+    }
+
+    public int getGeschafft(){
+        return this.geschafft;
+    }
+
     public boolean speichern() {
+        ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.setVisibility(PropertyAccessor.ALL, JsonAutoDetect.Visibility.ANY);
+
         try {
-            // Konfigurationsdatei erstellen oder laden
-            Parameters params = new Parameters();
-            File propertiesFile = new File("data.properties");
-
-            // Erstellen Sie eine FileBasedConfiguration-Instanz für die Properties-Datei
-            FileBasedConfigurationBuilder<FileBasedConfiguration> builder =
-                    new FileBasedConfigurationBuilder<>(FileBasedConfiguration.class)
-                            .configure(params.fileBased()
-                                    .setFile(propertiesFile));
-
-            // Laden Sie die Konfiguration aus der Datei
-            Configuration config = builder.getConfiguration();
-
-            // Array erstellen und Daten hinzufügen
-            config.setProperty("arraylist",paare);
-
-            // Konfigurationsdatei speichern
-            builder.save();
+            // Serialize and save the ArrayList to a JSON file
+            objectMapper.writeValue(new File("arraylist.json"), paare);
+            objectMapper.writeValue(new File("worttrainer.json"), this);
             return true;
-        } catch (Exception e) {
+        } catch (IOException e) {
             e.printStackTrace();
             return false;
         }
     }
 
     public boolean laden() {
+        ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.setVisibility(PropertyAccessor.ALL, JsonAutoDetect.Visibility.ANY);
+
         try {
-            // Konfigurationsdatei erstellen oder laden
-            Parameters params = new Parameters();
-            File propertiesFile = new File("data.properties");
-
-            // Erstellen Sie eine FileBasedConfiguration-Instanz für die Properties-Datei
-            FileBasedConfigurationBuilder<FileBasedConfiguration> builder =
-                    new FileBasedConfigurationBuilder<>(FileBasedConfiguration.class)
-                            .configure(params.fileBased()
-                                    .setFile(propertiesFile));
-
-            // Laden Sie die Konfiguration aus der Datei
-            Configuration config = builder.getConfiguration();
-
-            ArrayList<Paar> loadedArrayList = new ArrayList<>(config.getList(Paar.class, "arraylist"));
-
-            // Konfigurationsdatei speichern
-            builder.save();
+            // Deserialize and load the ArrayList from the JSON file
+            ArrayList<Paar> loadedList = objectMapper.readValue(new File("arraylist.json"), new TypeReference<ArrayList<Paar>>(){});
+            Worttrainer wt = objectMapper.readValue(new File("worttrainer.json"), new TypeReference<Worttrainer>() {});
+            this.versuche = wt.getVersuche();
+            this.geschafft = wt.getGeschafft();
+            // Use the loaded ArrayList
+            for (Paar item : loadedList) {
+                System.out.println(item);
+            }
             return true;
-        } catch (Exception e) {
+        } catch (IOException e) {
             e.printStackTrace();
             return false;
         }
