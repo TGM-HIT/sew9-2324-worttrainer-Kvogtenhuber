@@ -1,4 +1,5 @@
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.PropertyAccessor;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -25,6 +26,11 @@ public class Worttrainer {
         if(geschafft){
             this.geschafft++;
         }
+    }
+
+    @JsonIgnore
+    public ArrayList<Paar> getList(){
+        return paare;
     }
 
     public int getVersuche(){
@@ -60,10 +66,7 @@ public class Worttrainer {
             Worttrainer wt = objectMapper.readValue(new File("worttrainer.json"), new TypeReference<Worttrainer>() {});
             this.versuche = wt.getVersuche();
             this.geschafft = wt.getGeschafft();
-            // Use the loaded ArrayList
-            for (Paar item : loadedList) {
-                System.out.println(item);
-            }
+            this.paare = loadedList;
             return true;
         } catch (IOException e) {
             e.printStackTrace();
