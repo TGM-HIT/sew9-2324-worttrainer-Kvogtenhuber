@@ -26,6 +26,13 @@ public class GUI {
                     JOptionPane.PLAIN_MESSAGE
             );
             wt.addTry(list.get(i).checkWord(eingabe));
+            if(list.get(i).checkWord(eingabe)){
+                eingabe = "richtig!";
+            }
+            else{
+                eingabe = "falsch!";
+            }
+            JOptionPane.showMessageDialog(null, "Das war " + eingabe);
         }
         JOptionPane.showMessageDialog(null,"Statistik: " + wt.getVersuche() + " Versuche, " + wt.getGeschafft() + " davon sind richtig.");
         wt.speichern();

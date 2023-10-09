@@ -47,7 +47,6 @@ public class Worttrainer {
 
         try {
             // Serialize and save the ArrayList to a JSON file
-            objectMapper.writeValue(new File("arraylist.json"), paare);
             objectMapper.writeValue(new File("worttrainer.json"), this);
             return true;
         } catch (IOException e) {
@@ -62,8 +61,9 @@ public class Worttrainer {
 
         try {
             // Deserialize and load the ArrayList from the JSON file
-            ArrayList<Paar> loadedList = objectMapper.readValue(new File("arraylist.json"), new TypeReference<ArrayList<Paar>>(){});
             Worttrainer wt = objectMapper.readValue(new File("worttrainer.json"), new TypeReference<Worttrainer>() {});
+            ArrayList<Paar> loadedList = wt.getList();
+
             this.versuche = wt.getVersuche();
             this.geschafft = wt.getGeschafft();
             this.paare = loadedList;
