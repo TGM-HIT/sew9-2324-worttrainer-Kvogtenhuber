@@ -1,7 +1,10 @@
+import java.awt.*;
+import java.awt.image.*;
 import java.net.MalformedURLException;
 import java.util.ArrayList;
 import javax.swing.*;
 import java.net.URL;
+import javax.imageio.ImageIO;
 public class GUI {
     public static void main(String[] arg) throws MalformedURLException {
         //Paar p1 = new Paar("Wort", "https://www.cleverfiles.com/howto/wp-content/uploads/2018/03/minion.jpg");
@@ -17,7 +20,15 @@ public class GUI {
         for(int i=0; i<list.size();i++) {
             ImageIcon icon = new ImageIcon(list.get(i).getBild());
 
+            while(icon.getIconWidth()>300 || icon.getIconHeight()>300){
+                Image image = icon.getImage(); // transform it
+                Image newimg = image.getScaledInstance((int)(icon.getIconWidth()/1.5), (int)(icon.getIconHeight()/1.5),  java.awt.Image.SCALE_SMOOTH); // scale it the smooth way
+                icon = new ImageIcon(newimg);  // transform it back
+            }
+
+
             JLabel label = new JLabel(icon);
+
 
             eingabe = JOptionPane.showInputDialog(
                     null,
