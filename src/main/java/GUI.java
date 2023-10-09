@@ -5,8 +5,12 @@ import java.util.ArrayList;
 import javax.swing.*;
 import java.net.URL;
 import javax.imageio.ImageIO;
+
+/**
+ * Worttrainer wird geladen und am Schluss gespeichert, alles überprüft und ausgegeben und angezeigt.
+ */
 public class GUI {
-    public static void main(String[] arg) throws MalformedURLException {
+    public static void main(String[] arg) {
         //Paar p1 = new Paar("Wort", "https://www.cleverfiles.com/howto/wp-content/uploads/2018/03/minion.jpg");
         //Paar p2 = new Paar("WORT", "https://www.cleverfiles.com/howto/wp-content/uploads/2018/03/minion.jpg");
         ArrayList<Paar> list = new ArrayList<>();
@@ -16,34 +20,40 @@ public class GUI {
         wt.laden();
         list = wt.getList();
 
+        boolean weiter = true;
+
         String eingabe = "";
-        for(int i=0; i<list.size();i++) {
-            ImageIcon icon = new ImageIcon(list.get(i).getBild());
+        while(weiter) {
+            for (int i = 0; i < list.size(); i++) {
+                ImageIcon icon = new ImageIcon(list.get(i).getBild());
 
-            while(icon.getIconWidth()>300 || icon.getIconHeight()>300){
-                Image image = icon.getImage(); // transform it
-                Image newimg = image.getScaledInstance((int)(icon.getIconWidth()/1.5), (int)(icon.getIconHeight()/1.5),  java.awt.Image.SCALE_SMOOTH); // scale it the smooth way
-                icon = new ImageIcon(newimg);  // transform it back
+                while (icon.getIconWidth() > 300 || icon.getIconHeight() > 300) {
+                    Image image = icon.getImage(); // transform it
+                    Image newimg = image.getScaledInstance((int) (icon.getIconWidth() / 1.5), (int) (icon.getIconHeight() / 1.5), java.awt.Image.SCALE_SMOOTH); // scale it the smooth way
+                    icon = new ImageIcon(newimg);  // transform it back
+                }
+
+                JLabel label = new JLabel(icon);
+
+
+                eingabe = JOptionPane.showInputDialog(
+                        null,
+                        label,
+                        "Worttrainer",
+                        JOptionPane.PLAIN_MESSAGE
+                );
+                if (eingabe.equals("")) {
+                    weiter = false;
+                    break;
+                }
+                wt.addTry(list.get(i).checkWord(eingabe));
+                if (list.get(i).checkWord(eingabe)) {
+                    eingabe = "richtig!";
+                } else {
+                    eingabe = "falsch!";
+                }
+                JOptionPane.showMessageDialog(null, "Das war " + eingabe);
             }
-
-
-            JLabel label = new JLabel(icon);
-
-
-            eingabe = JOptionPane.showInputDialog(
-                    null,
-                    label,
-                    "Worttrainer",
-                    JOptionPane.PLAIN_MESSAGE
-            );
-            wt.addTry(list.get(i).checkWord(eingabe));
-            if(list.get(i).checkWord(eingabe)){
-                eingabe = "richtig!";
-            }
-            else{
-                eingabe = "falsch!";
-            }
-            JOptionPane.showMessageDialog(null, "Das war " + eingabe);
         }
         JOptionPane.showMessageDialog(null,"Statistik: " + wt.getVersuche() + " Versuche, " + wt.getGeschafft() + " davon sind richtig.");
         wt.speichern();
