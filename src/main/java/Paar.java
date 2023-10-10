@@ -6,8 +6,7 @@ import java.net.*;
  * Paar Klasse.
  * Speichert ein Wort und eine URL dazu.
  */
-public class Paar implements Serializable {
-    private static final long serialVersionUID = 1L;
+public class Paar {
     private String wort;
     private URL bild;
 

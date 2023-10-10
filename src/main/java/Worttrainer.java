@@ -7,7 +7,7 @@ import java.util.*;
 /**
  * Das ist der Worttrainer
  */
-public class Worttrainer {
+public class Worttrainer{
     private ArrayList<Paar> paare;
     private int versuche;
     private int geschafft;
@@ -69,6 +69,7 @@ public class Worttrainer {
      * Speichert das Worttrainer Objekt
      * @return obs geschafft wurde
      */
+    /*
     public boolean speichern() {
         ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.setVisibility(PropertyAccessor.ALL, JsonAutoDetect.Visibility.ANY);
@@ -82,11 +83,12 @@ public class Worttrainer {
             return false;
         }
     }
-
+    */
     /**
      * Ladet das Worttrainer Objekt
      * @return obs geschafft wurd
      */
+    /*
     public boolean laden() {
         ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.setVisibility(PropertyAccessor.ALL, JsonAutoDetect.Visibility.ANY);
@@ -105,4 +107,5 @@ public class Worttrainer {
             return false;
         }
     }
+     */
 }

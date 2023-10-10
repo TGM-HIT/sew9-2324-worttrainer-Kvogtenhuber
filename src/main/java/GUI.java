@@ -17,7 +17,12 @@ public class GUI {
         //list.add(p1);
         //list.add(p2);
         Worttrainer wt = new Worttrainer(list);
-        wt.laden();
+        //wt.laden();
+
+        SuL laden = new Laden();
+        wt = laden.sTrAtEgYpAtTeRn(wt);
+
+
         list = wt.getList();
 
         boolean weiter = true;
@@ -56,6 +61,9 @@ public class GUI {
             }
         }
         JOptionPane.showMessageDialog(null,"Statistik: " + wt.getVersuche() + " Versuche, " + wt.getGeschafft() + " davon sind richtig.");
-        wt.speichern();
+        //wt.speichern();
+
+        SuL speichern = new Speichern();
+        speichern.sTrAtEgYpAtTeRn(wt);
     }
 }
